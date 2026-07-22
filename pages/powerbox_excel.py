@@ -4,6 +4,42 @@ import pandas as pd
 from io import BytesIO
 df = pd.read_excel('data/ATE_Tracking_Record_10726.xlsx')
 
+config = {
+    "credentials": {
+        "usernames": {
+            "admin": {
+                "email": st.secrets["credentials"]["usernames"]["admin"]["email"],
+                "first_name": st.secrets["credentials"]["usernames"]["admin"]["first_name"],
+                "last_name": st.secrets["credentials"]["usernames"]["admin"]["last_name"],
+                "username": st.secrets["credentials"]["usernames"]["admin"]["username"],
+                "password": st.secrets["credentials"]["usernames"]["admin"]["password"],
+                "logged_in": False,
+                "failed_login_attempts": 0
+            }
+        }
+    },
+    "cookie": {
+        "name": st.secrets["cookie"]["name"],
+        "key": st.secrets["cookie"]["key"],
+        "expiry_days": st.secrets["cookie"]["expiry_days"]
+    }
+}
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days']
+)
+
+authenticator.login(location='unrendered')
+
+if not st.session_state.get('authentication_status'):
+    st.error("You must log in first.")
+    if st.button("Go to Login"):
+        st.switch_page("Login.py")
+    st.stop()
+
+
 edited_df = st.data_editor(df, num_rows = "dynamic")
 
 if st.button("Save Changes on Dashboard"):
