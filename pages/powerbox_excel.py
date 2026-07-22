@@ -37,7 +37,7 @@ authenticator.login(location='unrendered')
 if not st.session_state.get('authentication_status'):
     st.error("You must log in first.")
     if st.button("Go to Login"):
-        st.switch_page("Login.py")
+        st.switch_page("loginexcel.py")
     st.stop()
 
 authenticator.logout(location='sidebar')
