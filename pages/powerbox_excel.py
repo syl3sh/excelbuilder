@@ -48,12 +48,7 @@ if st.button("Save Changes on Dashboard"):
   edited_df.to_excel("data/ATE_Tracking_Record_10726.xlsx", index = False)
   st.success("Saved")
 
-def highlight_condition(val):
-    color = "background-color: yellow" if val=("Done") else ""
-    return color
 
-styled_df = df.style.applymap(highlight_condition, subset=["Unnamed: 6"])
-st.dataframe(styled_df)
 
 def convert_df_to_excel(df):
   output = BytesIO()
