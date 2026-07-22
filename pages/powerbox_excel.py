@@ -49,7 +49,7 @@ if st.button("Save Changes on Dashboard"):
   st.success("Saved")
 
 def highlight_condition(val):
-    color = "background-color: yellow" if val =="Done" else ""
+    color = "background-color: yellow" if val=("Done") else ""
     return color
 
 styled_df = df.style.applymap(highlight_condition, subset=["Unnamed: 6"])
