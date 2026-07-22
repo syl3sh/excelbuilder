@@ -39,5 +39,5 @@ elif st.session_state.get('authentication_status') is None:
     st.warning("Please enter username and password")
 elif st.session_state.get('authentication_status'):
     st.success('Welcome')
-    if st.button("Go to Dashboard", use_container_width=True):
+    if st.button("Go to Spreadsheet", use_container_width=True):
         st.switch_page("pages/powerbox_excel.py")
