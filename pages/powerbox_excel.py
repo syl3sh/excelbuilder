@@ -52,7 +52,7 @@ def highlight_condition(val):
     color = "background-color: yellow" if val =="Done" else ""
     return color
 
-styled_df = df.style.applymap(highlight_condition, subset=["Score"])
+styled_df = df.style.applymap(highlight_condition, subset=["Status"])
 st.dataframe(styled_df)
 
 def convert_df_to_excel(df):
