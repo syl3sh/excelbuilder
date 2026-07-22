@@ -40,6 +40,7 @@ if not st.session_state.get('authentication_status'):
         st.switch_page("Login.py")
     st.stop()
 
+authenticator.logout(location='sidebar')
 
 edited_df = st.data_editor(df, num_rows = "dynamic")
 
