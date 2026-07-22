@@ -59,7 +59,7 @@ def convert_df_to_excel(df):
 excel_data = convert_df_to_excel(edited_df)
 
 st.download_button(
-    label="Save copy as Excel",
+    label="Save Copy as Excel",
     data=excel_data,
     file_name="ATE Tracking Record 10726_edited.xlsx",
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
