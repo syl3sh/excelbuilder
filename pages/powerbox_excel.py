@@ -42,7 +42,6 @@ if not st.session_state.get('authentication_status'):
 
 authenticator.logout(location='sidebar')
 
-edited_df = st.data_editor(df, num_rows = "dynamic")
 
 if "version_history" not in st.session_state:
     st.session_state.version_history = [pd.read_excel("data/ATE_Tracking_Record_10726.xlsx")]
