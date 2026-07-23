@@ -44,9 +44,23 @@ authenticator.logout(location='sidebar')
 
 edited_df = st.data_editor(df, num_rows = "dynamic")
 
+if "version_history" not in st.session_state:
+    st.session_state.version_history = [pd.read_excel("data/ATE_Tracking_Record_10726.xlsx")]
+    current_df=st.session_state.version_history[-1]
+    edited_df = st.data_editor(current_df, num rows = "dynamic")
+
+
+
 if st.button("Save Changes on Dashboard"):
-  edited_df.to_excel("data/ATE_Tracking_Record_10726.xlsx", index = False)
+  st.session_state.version_history.append(edited_df.copy())
   st.success("Saved")
+
+version_num = st.selectbox(
+    "View a previous version",
+    range(len(st.session_state.version_history)),
+    format_func=lambda i: f"Version {i+1}"
+)
+st.dataframe(st.session_state.version_history[version_num])
 
 
 
