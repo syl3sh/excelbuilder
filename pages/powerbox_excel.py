@@ -5,6 +5,7 @@ from io import BytesIO
 from datetime import datetime
 import pytz
 import streamlit_authenticator as stauth
+from streamlit_gsheets import GSheetsConnection
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload,MediaIoBaseUpload
