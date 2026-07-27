@@ -15,7 +15,7 @@ gitdb==4.0.12
 GitPython==3.1.50
 google-api-python-client==2.198.0
 google-auth==2.40.3
-streamlit-gsheets==0.1.1
+st-gsheets-connection
 h11==0.16.0
 httptools==0.8.0
 idna==3.18
