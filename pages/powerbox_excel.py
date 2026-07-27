@@ -14,7 +14,7 @@ sgt = pytz.timezone("Asia/Singapore")
 df = pd.read_excel('data/ATE_Tracking_Record_10726.xlsx')
 
 creds_dict = dict(st.secrets["gdrive"])
-history_folder_id = creds_dict.pop("https://drive.google.com/drive/folders/10kh75DDC5Fu17HLKu_QTK8GqqNOsbY_7?usp=sharing")
+history_folder_id = creds_dict.pop("history_folder_id")
 gcrendentials = service_account.Credentials.from_service_account_info(
     creds_dict, scopes=["https://www.googleapis.com/auth/drive"]
 )
