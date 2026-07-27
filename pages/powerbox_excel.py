@@ -6,9 +6,7 @@ from datetime import datetime
 import pytz
 import streamlit_authenticator as stauth
 from streamlit_gsheets import GSheetsConnection
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseDownload,MediaIoBaseUpload
+from github import Github
 
 sgt = pytz.timezone("Asia/Singapore")
 df = pd.read_excel('data/ATE_Tracking_Record_10726.xlsx')
@@ -19,6 +17,10 @@ crendentials = service_account.Credentials.from_service_account_info(
     creds_dict, scopes=["https://www.googleapis.com/auth/drive"]
 )
 service=build("drive", "v3", credentials=credentials)
+g = Github(st.secrets["github"]["token"])
+repo = g.get_repo(st.secrets["github"]["repo"])
+branch = st.secrets["github"]["branch"]
+history_path = "data/history"
 
 
 
