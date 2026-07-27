@@ -62,12 +62,11 @@ if not st.session_state.get('authentication_status'):
 authenticator.logout(location='sidebar')
 
 def list_versions():
-           results = service.files().list(
-               q="'{history_folder_id}' in parents",
-               orderBy="createdTime desc",
-               fields="files(id, name, createdTime)"
-           ).execute()
-           return results.get("files", [])
+    try:
+        content = repo.get_contents(history_path, ref=branch)
+        return sorted(contents, key=lambda f:f.name, reverse = True)
+    except Exception:
+        return[]
 
 versions = list_versions()
 if not versions:
@@ -87,20 +86,12 @@ if st.button("Save Changes on Dashboard"):
     st.success("Save a new version!")
     st.rerun()
     
-version_labels=[v["createdTime"] for v in versions]
-selected_label=st.selectbox("View a previous version", version_labels)
-selected_file_id=next(v["id"] for v in versions if v["createdTime"] == selected_label)
+version_labels = [v.name for v in versions]
+selected_label = st.selectbox("View a previous version", version_labels)
+selected_file = next(v for v in versions if v.name == selected_label)
+st.dataframe(download_version(selected_file))
 
-st.write("Viewing selected version:")
-st.dataframe(download_version(selected_file_id))
 
-def list_versions():
-           results = service.files().list(
-               q="'{history_folder_id}' in parents",
-               orderBy="createdTime desc",
-               fields="files(id, name, createdTime)"
-           ).execute()
-           return results.get("files", [])
 
 
 
@@ -117,31 +108,25 @@ excel_data = convert_df_to_excel(edited_df)
 
 
 
-def download_version(file_id):
-    request = service.files().get_media(fileId=file_id)
-    buffer = BytesIO()
-    downloader = MediaIoBaseDownload(buffer, request)
-    done = False
-    while not done:
-        _, done = downloader.next_chunk()
-    buffer.seek(0)
+def download_version(file_content):
+    buffer=BytesIO(file_content.decoded_content)
     return pd.read_excel(buffer)
-
+    
 def save_version(df):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"{history_path}/ATE_Tracking_Record_{timestamp}.xlsx"
+    
     buffer = BytesIO()
     with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
         df.to_excel(writer, index=False, sheet_name="Sheet1")
     buffer.seek(0)
-    file_metadata = {
-        "name": f"ATE_Tracking_Record_{timestamp}.xlsx",
-        "parents": [history_folder_id]
-    }
-    media = MediaIoBaseUpload(
-        buffer,
-        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    
+    repo.create_file(
+        path=filename,
+        message=f"Save version {timestamp}",
+        content=buffer.getvalue(),
+        branch=branch
     )
-    service.files().create(body=file_metadata, media_body=media).execute()
     
 st.download_button(
     label="Save Copy as Excel",
