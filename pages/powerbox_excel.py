@@ -76,7 +76,7 @@ def save_version(df):
         path="data/history",
         message=f"Save version {timestamp}",
         content=buffer.getvalue(),
-        branch=main
+        branch="main"
     )
 versions = list_versions()
 if not versions:
