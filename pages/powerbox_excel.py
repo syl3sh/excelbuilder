@@ -17,7 +17,7 @@ df = pd.read_excel('data/ATE_Tracking_Record_10726.xlsx')
 g = Github(st.secrets["github"]["token"])
 repo = g.get_repo(st.secrets["github"]["repo"])
 branch = st.secrets["github"]["branch"]
-history_path = "data/history"
+
 
 
 
