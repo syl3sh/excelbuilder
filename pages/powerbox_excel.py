@@ -73,7 +73,7 @@ def save_version(df):
         df.to_excel(writer, index=False, sheet_name="Sheet1")
     buffer.seek(0)
     repo.create_file(
-        path=path,
+        path=history_path,
         message=f"Save version {timestamp}",
         content=buffer.getvalue(),
         branch= branch
@@ -92,8 +92,6 @@ current_df = download_version(latest_version["id"])
 
 edited_df=st.data_editor(current_df, num_rows="dynamic")
 
-
-
 if st.button("Save Changes on Dashboard"):
     save_version(edited_df)
     st.success("Save a new version!")
@@ -104,11 +102,6 @@ selected_label = st.selectbox("View a previous version", version_labels)
 selected_file = next(v for v in versions if v.name == selected_label)
 st.dataframe(download_version(selected_file))
 
-
-
-
-
-
 def convert_df_to_excel(df):
   output = BytesIO()
   with pd.ExcelWriter(output, engine = "openpyxl") as writer:
@@ -116,14 +109,6 @@ def convert_df_to_excel(df):
     return output.getvalue()
 
 excel_data = convert_df_to_excel(edited_df)
-
-
-
-
-
-
-    
-
     
 st.download_button(
     label="Save Copy as Excel",
