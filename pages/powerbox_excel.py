@@ -61,10 +61,11 @@ authenticator.logout(location='sidebar')
 
 def list_versions():
     try:
-        content = repo.get_contents(history_path, ref=branch)
-        return sorted(contents, key=lambda f:f.name, reverse = True)
-    except Exception:
-        return[]
+        contents = repo.get_contents(history_path, ref=branch)
+        return sorted(contents, key=lambda f: f.name, reverse=True)
+    except Exception as e:
+        st.error(f"list_versions failed: {e}")
+        return []
 def save_version(df):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     filename = f"{history_path}/ATE_Tracking_Record_{timestamp}.xlsx"
@@ -86,8 +87,10 @@ versions = list_versions()
 if not versions:
     current_df = pd.read_excel("data/ATE_Tracking_Record_10726.xlsx")
     save_version(current_df)
-    st.info("Saved the first version — refreshing...")
-    st.rerun()
+    st.warning("Saved the first version. Click below to refresh.")
+    if st.button("Refresh now"):
+        st.rerun()
+    st.stop()
 
 if not versions:
     st.warning("No saved versions found yet. Please try saving again.")
