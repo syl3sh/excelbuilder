@@ -72,7 +72,6 @@ def save_version(df):
     with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
         df.to_excel(writer, index=False, sheet_name="Sheet1")
     buffer.seek(0)
-    
     repo.create_file(
         path=filename,
         message=f"Save version {timestamp}",
