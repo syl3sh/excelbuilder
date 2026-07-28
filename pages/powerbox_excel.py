@@ -73,11 +73,14 @@ def save_version(df):
         df.to_excel(writer, index=False, sheet_name="Sheet1")
     buffer.seek(0)
     repo.create_file(
-        path="data/history",
+        path=path,
         message=f"Save version {timestamp}",
         content=buffer.getvalue(),
-        branch="main"
+        branch= branch
     )
+def download_version(file_content):
+    buffer=BytesIO(file_content.decoded_content)
+    return pd.read_excel(buffer)
 versions = list_versions()
 if not versions:
     current_df = pd.read_excel("data/ATE_Tracking_Record_10726.xlsx")
@@ -118,9 +121,7 @@ excel_data = convert_df_to_excel(edited_df)
 
 
 
-def download_version(file_content):
-    buffer=BytesIO(file_content.decoded_content)
-    return pd.read_excel(buffer)
+
     
 
     
