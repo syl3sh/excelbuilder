@@ -10,7 +10,7 @@ from github import Github
 
 sgt = pytz.timezone("Asia/Singapore")
 df = pd.read_excel('data/ATE_Tracking_Record_10726.xlsx')
-history_path = "data/history"
+history_path = "excelbuilder/data/history"
 
 
 
