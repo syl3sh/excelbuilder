@@ -58,16 +58,7 @@ if not st.session_state.get('authentication_status'):
     st.stop()
 
 authenticator.logout(location='sidebar')
-new_col_name = st.text_input("new column name")
-if st.button("Add column"):
-    if new_col_name and new_col_name not in current_df.columns:
-        current_df[new_col_name] = ""
-        st.success(f"Added column: {new_col_name}")
-        st.rerun()
-    elif new_col_name in current_df.columns:
-        st.warning("A column with that name already exists")
 
-edited_df=st.data_editor(current_df, num_rows="dynamic")
 
 def list_versions():
     try:
@@ -107,6 +98,17 @@ if not versions:
     st.stop()
 
 latest_version = versions[0]
+
+new_col_name = st.text_input("new column name")
+if st.button("Add column"):
+    if new_col_name and new_col_name not in current_df.columns:
+        current_df[new_col_name] = ""
+        st.success(f"Added column: {new_col_name}")
+        st.rerun()
+    elif new_col_name in current_df.columns:
+        st.warning("A column with that name already exists")
+
+edited_df=st.data_editor(current_df, num_rows="dynamic")
 
 current_df = download_version(latest_version)
 
