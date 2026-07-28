@@ -98,7 +98,7 @@ if not versions:
 
 latest_version = versions[0]
 
-current_df = download_version(latest_version["id"])
+current_df = download_version(latest_version)
 
 edited_df=st.data_editor(current_df, num_rows="dynamic")
 
