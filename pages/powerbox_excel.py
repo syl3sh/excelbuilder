@@ -86,9 +86,15 @@ versions = list_versions()
 if not versions:
     current_df = pd.read_excel("data/ATE_Tracking_Record_10726.xlsx")
     save_version(current_df)
-    versions = list_versions()
+    st.info("Saved the first version — refreshing...")
+    st.rerun()
+
+if not versions:
+    st.warning("No saved versions found yet. Please try saving again.")
+    st.stop()
 
 latest_version = versions[0]
+
 current_df = download_version(latest_version["id"])
 
 edited_df=st.data_editor(current_df, num_rows="dynamic")
