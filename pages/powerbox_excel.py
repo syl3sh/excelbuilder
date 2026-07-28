@@ -64,7 +64,21 @@ def list_versions():
         return sorted(contents, key=lambda f:f.name, reverse = True)
     except Exception:
         return[]
-
+def save_version(df):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"{history_path}/ATE_Tracking_Record_{timestamp}.xlsx"
+    
+    buffer = BytesIO()
+    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+        df.to_excel(writer, index=False, sheet_name="Sheet1")
+    buffer.seek(0)
+    
+    repo.create_file(
+        path=filename,
+        message=f"Save version {timestamp}",
+        content=buffer.getvalue(),
+        branch=branch
+    )
 versions = list_versions()
 if not versions:
     current_df = pd.read_excel("data/ATE_Tracking_Record_10726.xlsx")
@@ -109,21 +123,7 @@ def download_version(file_content):
     buffer=BytesIO(file_content.decoded_content)
     return pd.read_excel(buffer)
     
-def save_version(df):
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"{history_path}/ATE_Tracking_Record_{timestamp}.xlsx"
-    
-    buffer = BytesIO()
-    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
-        df.to_excel(writer, index=False, sheet_name="Sheet1")
-    buffer.seek(0)
-    
-    repo.create_file(
-        path=filename,
-        message=f"Save version {timestamp}",
-        content=buffer.getvalue(),
-        branch=branch
-    )
+
     
 st.download_button(
     label="Save Copy as Excel",
