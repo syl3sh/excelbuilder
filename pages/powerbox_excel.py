@@ -100,10 +100,10 @@ if not versions:
 latest_version = versions[0]
 
 
-
+current_df = download_version(latest_version)
 edited_df=st.data_editor(current_df, num_rows="dynamic")
 
-current_df = download_version(latest_version)
+
 
 
 if st.button("Save Changes on Dashboard"):
