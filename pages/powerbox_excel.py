@@ -9,7 +9,7 @@ from streamlit_gsheets import GSheetsConnection
 from github import Github
 
 sgt = pytz.timezone("Asia/Singapore")
-df = pd.read_excel('ATE_Tracking_Record _10726.xlsx')
+current_df = load_original_file()
 history_path = "excelbuilder/data/history"
 
 
@@ -18,6 +18,11 @@ history_path = "excelbuilder/data/history"
 g = Github(st.secrets["github"]["token"])
 repo = g.get_repo(st.secrets["github"]["repo"])
 branch = st.secrets["github"]["branch"]
+
+def load_original_file():
+    file_content = repo.get_contents("excelbuilder/ATE_Tracking_Record _10726.xlsx", ref = branch)
+    buffer = BytesIO(file_content.decoded_content)
+    return pd.read_excel(buffer)
 
 
 
@@ -81,6 +86,7 @@ def save_version(df):
         content=buffer.getvalue(),
         branch= branch
     )
+
 def download_version(file_content):
     buffer=BytesIO(file_content.decoded_content)
     return pd.read_excel(buffer)
