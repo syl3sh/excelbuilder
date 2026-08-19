@@ -9,7 +9,7 @@ from streamlit_gsheets import GSheetsConnection
 from github import Github
 
 def load_original_file():
-    file_content = repo.get_contents("excelbuilder/ATE_Tracking_Record _10726.xlsx", ref = branch)
+    file_content = repo.get_contents("excelfiles/ATE_Tracking_Record _10726.xlsx", ref = branch)
     buffer = BytesIO(file_content.decoded_content)
     return pd.read_excel(buffer)
 
