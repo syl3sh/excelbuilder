@@ -8,6 +8,10 @@ import streamlit_authenticator as stauth
 from streamlit_gsheets import GSheetsConnection
 from github import Github
 
+g = Github(st.secrets["github"]["token"])
+repo = g.get_repo(st.secrets["github"]["repo"])
+branch = st.secrets["github"]["branch"]
+
 def load_original_file():
     file_content = repo.get_contents("data/ATE_Tracking_Record _10726.xlsx", ref = branch)
     buffer = BytesIO(file_content.decoded_content)
@@ -16,18 +20,6 @@ def load_original_file():
 sgt = pytz.timezone("Asia/Singapore")
 current_df = load_original_file()
 history_path = "excelbuilder/data/history"
-
-
-
-
-g = Github(st.secrets["github"]["token"])
-repo = g.get_repo(st.secrets["github"]["repo"])
-branch = st.secrets["github"]["branch"]
-
-
-
-
-
 
 config = {
     "credentials": {
